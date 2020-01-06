@@ -3,13 +3,13 @@ from UHH2.core.ntuple_generator import generate_process  # use CMSSW type path f
 from UHH2.core.optionsParse import setup_opts, parse_apply_opts
 
 
-"""NTuple config for 2016UL (preVFP) miniaod MC datasets.
+"""NTuple config for 2016UL (postVFP) miniaod MC datasets.
 
 You should try and put any centralised changes in generate_process(), not here.
 """
 
 
-process = generate_process(year="2016UL", useData=False)
+process = generate_process(year="2016ULPostVFP", useData=False)
 
 # Please do not commit changes to source filenames - used for consistency testing
 process.source.fileNames = cms.untracked.vstring([
