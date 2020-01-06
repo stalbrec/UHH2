@@ -60,6 +60,9 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
     if year not in acceptable_years:
         raise ValueError("year argument in generate_process() should be one of: %s. You provided: %s" % (acceptable_years, year))
 
+    if useData and year in ["2016ULPreVFP", "2016ULPostVFP"]:
+        raise ValueError("for 2016UL data you should use the year '2016UL'! %s is only intended for MC!"%year)
+
     met_sources_GL = cms.vstring("slimmedMETs", "slimmedMETsPuppi")
 
 
