@@ -55,7 +55,7 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
         If the year argument is not one of the allowable options
     """
     year = str(year)  # sanitise string
-    acceptable_years = ["2016v2", "2016v3", "2017v1", "2017v2", "2018", "2017UL", "2018UL"]
+    acceptable_years = ["2016v2", "2016v3", "2017v1", "2017v2", "2018", "2016ULPreVFP", "2016UL", "2017UL", "2018UL"] #year 2016UL acts as 2016ULPostVFP for mc since there are different GTs for pre/postVFP for mc but not for data
     if year not in acceptable_years:
         raise ValueError("year argument in generate_process() should be one of: %s. You provided: %s" % (acceptable_years, year))
 
@@ -85,6 +85,10 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
         process = cms.Process("USER", eras.Run2_2016, eras.run2_miniAOD_80XLegacy) 
     elif year == "2016v2":
         process = cms.Process("USER", eras.Run2_2016)
+    elif year == "2016ULPreVFP":
+        process = cms.Process("USER", eras.Run2_2016, eras.run2_miniAOD_80XLegacy)
+    elif year == "2016UL":
+        process = cms.Process("USER", eras.Run2_2016, eras.run2_miniAOD_80XLegacy)
     else:
         raise RuntimeError("Cannot setup process for this year, may need to add a new entry.")
 
@@ -275,6 +279,14 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
             # TODO: does this need runH specific GTs?
             "data": "94X_dataRun2_v10",
             "mc": "94X_mcRun2_asymptotic_v3",
+        },
+        "2016ULPreVFP": {
+            "data": "106X_dataRun2_v25",
+            "mc": "106X_mcRun2_asymptotic_preVFP_v3",
+        },
+        "2016UL": {
+            "data": "106X_dataRun2_v25",
+            "mc": "106X_mcRun2_asymptotic_v9",
         },
         "2017v1": {
             "data": "92X_dataRun2_Prompt_v11", # don't really use, so possibly wrong
@@ -1863,6 +1875,8 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
     iso_input_era_dict = {
         "2016v2": ele_iso_16,
         "2016v3": ele_iso_16,
+        "2016ULPreVFP": ele_iso_16,
+        "2016UL": ele_iso_16,
         "2017v1": ele_iso_17,
         "2017v2": ele_iso_17,
         "2017UL": ele_iso_17,

@@ -99,6 +99,8 @@ float inv_mass_safe(const LorentzVector&);
 enum class Year {
     is2016v2,
     is2016v3,
+    is2016ULPreVFP,
+    is2016UL,
     is2017v1,
     is2017v2,
     is2017UL,
@@ -110,6 +112,8 @@ enum class Year {
 const std::map<Year, std::string> year_str_map = {
     {Year::is2016v2, "2016v2"},
     {Year::is2016v3, "2016v3"},
+    {Year::is2016ULPreVFP, "2016ULPreVFP"},
+    {Year::is2016UL, "2016UL"},
     {Year::is2017v1, "2017v1"},
     {Year::is2017v2, "2017v2"},
     {Year::is2017UL, "2017UL"},
