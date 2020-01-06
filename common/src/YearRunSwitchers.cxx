@@ -38,13 +38,13 @@ bool YearSwitcher::process(uhh2::Event & event) {
     else if ((year_ == Year::is2016ULPreVFP) && module2016ULPreVFP_) {
       theModule_ = module2016ULPreVFP_;
     }
-    else if ((year_ == Year::is2016UL) && module2016ULPostVFP_) {
+    else if ((year_ == Year::is2016ULPostVFP) && module2016ULPostVFP_) {
       theModule_ = module2016ULPostVFP_;
     }
-    else if ((year_ == Year::is2016ULPreVFP || year_ == Year::is2016UL) && module2016UL_) {
+    else if ((year_ == Year::is2016ULPreVFP || year_ == Year::is2016ULPostVFP || year_ == Year::is2016UL) && module2016UL_) {
       theModule_ = module2016UL_;
     }
-    else if ((year_ == Year::is2016v2 || year_ == Year::is2016v3 || year_ == Year::is2016ULPreVFP || year_ == Year::is2016UL) && module2016_) {
+    else if ((year_ == Year::is2016v2 || year_ == Year::is2016v3 || year_ == Year::is2016ULPreVFP || year_ == Year::is2016ULPostVFP || year_ == Year::is2016UL) && module2016_) {
       theModule_ = module2016_;
     }
 

@@ -55,7 +55,8 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
         If the year argument is not one of the allowable options
     """
     year = str(year)  # sanitise string
-    acceptable_years = ["2016v2", "2016v3", "2017v1", "2017v2", "2018", "2016ULPreVFP", "2016UL", "2017UL", "2018UL"] #year 2016UL acts as 2016ULPostVFP for mc since there are different GTs for pre/postVFP for mc but not for data
+    #the years 2016ULPreVFP and 2016ULPostVFP are intended for MC only, since for 2016UL data there is only one GlobalTag
+    acceptable_years = ["2016v2", "2016v3", "2017v1", "2017v2", "2018", "2016ULPreVFP", "2016ULPostVFP", "2016UL", "2017UL", "2018UL"]
     if year not in acceptable_years:
         raise ValueError("year argument in generate_process() should be one of: %s. You provided: %s" % (acceptable_years, year))
 
@@ -86,6 +87,8 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
     elif year == "2016v2":
         process = cms.Process("USER", eras.Run2_2016)
     elif year == "2016ULPreVFP":
+        process = cms.Process("USER", eras.Run2_2016, eras.run2_miniAOD_80XLegacy)
+    elif year == "2016ULPostVFP":
         process = cms.Process("USER", eras.Run2_2016, eras.run2_miniAOD_80XLegacy)
     elif year == "2016UL":
         process = cms.Process("USER", eras.Run2_2016, eras.run2_miniAOD_80XLegacy)
@@ -283,6 +286,10 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
         "2016ULPreVFP": {
             "data": "106X_dataRun2_v25",
             "mc": "106X_mcRun2_asymptotic_preVFP_v3",
+        },
+        "2016ULPostVFP": {
+            "data": "106X_dataRun2_v25",
+            "mc": "106X_mcRun2_asymptotic_v9",
         },
         "2016UL": {
             "data": "106X_dataRun2_v25",
@@ -1876,6 +1883,7 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
         "2016v2": ele_iso_16,
         "2016v3": ele_iso_16,
         "2016ULPreVFP": ele_iso_16,
+        "2016ULPostVFP": ele_iso_16,
         "2016UL": ele_iso_16,
         "2017v1": ele_iso_17,
         "2017v2": ele_iso_17,
