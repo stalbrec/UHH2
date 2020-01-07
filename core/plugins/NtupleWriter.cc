@@ -1120,7 +1120,7 @@ bool NtupleWriter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) {
      triggerPrescalesL1max.clear();
 
      //read trigger info from triggerBits (k=0) and from metfilterBits (k=1)
-     for(int k=0;k<2; k++){
+     for(int k=0;k<1; k++){
        edm::Handle<edm::TriggerResults> triggerBits;
        edm::Handle<pat::PackedTriggerPrescales> packedTriggerPrescales;
        edm::Handle<pat::PackedTriggerPrescales> packedTriggerPrescalesL1min;
