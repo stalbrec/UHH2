@@ -95,6 +95,9 @@ float inv_mass_safe(const LorentzVector&);
 
 /**
  * Year enum to handle generic switching of year-specific bits of code
+ * The years 2016ULPre/PostVFP are for MC only, since there are two different sets of samples:
+ * PreVFP  -> APV sim and HIP mitigation turned ON  (GT:106X_mcRun2_asymptotic_preVFP_v3)
+ * PostVFP -> APV sim and HIP mitigation turned OFF (GT:106X_mcRun2_asymptotic_v9)
  */
 enum class Year {
     is2016v2,
