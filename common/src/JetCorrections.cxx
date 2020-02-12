@@ -845,13 +845,13 @@ JetResolutionSmearer::JetResolutionSmearer(uhh2::Context & ctx){
   JERSmearing::SFtype1 JER_sf = {};
   std::string sfFilename = "";
   std::string resFilename = "";
-  if (year == Year::is2016v2 || year == Year::is2016v3) {
+  if (year == Year::is2016v2 || year == Year::is2016v3 || year == Year::is2016ULPreVFP || year == Year::is2016ULPostVFP || year == Year::is2016UL) {
     JER_sf = JERSmearing::SF_13TeV_Summer16_25nsV1;
     resFilename = "2016/Summer16_25nsV1_MC_PtResolution_" + filenameAppend;
-  } else if (year == Year::is2017v1 || year == Year::is2017v2) {
+  } else if (year == Year::is2017v1 || year == Year::is2017v2 || year == Year::is2017UL) {
     JER_sf = JERSmearing::SF_13TeV_Fall17_V3;
     resFilename = "2017/Fall17_V3_MC_PtResolution_" + filenameAppend;
-  } else if (year == Year::is2018) {
+  } else if (year == Year::is2018 || year == Year::is2018UL) {
     sfFilename = "common/data/2018/Autumn18_V7_MC_SF_" + filenameAppend;
     resFilename = "2018/Autumn18_V7_MC_PtResolution_" + filenameAppend;
   } else {
