@@ -1858,8 +1858,25 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
 
 
 
-    from RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff import isoInputs as ele_iso_16
-    from RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V2_cff import isoInputs as ele_iso_17
+    # from RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Summer16_80X_V1_cff import isoInputs as ele_iso_16
+    # from RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V2_cff import isoInputs as ele_iso_17
+    # in CMSSW_11_0_0_pre10 the way the cutbased isolation criteria are handled is somewhat different so the above bits do not exists anymore
+    class IsolationCutInputs_V2:
+        """
+        A container class that holds the name of the file with the effective 
+        area constants for pile-up corrections
+        """
+        def __init__(self,isoEffAreas):
+            self.isoEffAreas    = isoEffAreas
+    ele_iso_16 = IsolationCutInputs_V2(
+        # phoIsolationEffAreas
+        "RecoEgamma/ElectronIdentification/data/Summer16/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_80X.txt"
+    )
+    ele_iso_17 = IsolationCutInputs_V2(
+        # phoIsolationEffAreas
+        "RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt"
+    )
+    
     iso_input_era_dict = {
         "2016v2": ele_iso_16,
         "2016v3": ele_iso_16,
@@ -2356,7 +2373,8 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
                                         # ) ,
                                     ),
 
-                                    doTrigger=cms.bool(True),
+                                    # doTrigger=cms.bool(True),
+                                    doTrigger=cms.bool(False),
                                     trigger_bits=cms.InputTag("TriggerResults", "", "HLT"),
                                     # MET filters (HBHE noise, CSC, etc.) are stored as trigger Bits in
                                     # MINIAOD produced in path "PAT"/"RECO" with prefix "Flag_"
@@ -2445,7 +2463,7 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
                                     extra_trigger_bits=extra_trigger_bits,
 
                                     #For 2017 data with prefiring issue it might be usefull to store L1 seeds
-                                    doL1seed=cms.bool(True),
+                                    doL1seed=cms.bool(False),
                                     l1GtSrc = cms.InputTag("gtStage2Digis"),
                                     l1EGSrc = cms.InputTag("caloStage2Digis:EGamma"),
                                     l1JetSrc = cms.InputTag("caloStage2Digis:Jet"),
