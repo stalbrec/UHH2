@@ -20,7 +20,7 @@ def read_xml(xmlFileDir):
     rootFileStore = []
     comment = False
     for line in xmlFile:
-        if ".root" in line:
+        if ".root" in line and 'BAD' not in line:
             rootFileStore.append(line.split('"')[1])
     return rootFileStore
 
