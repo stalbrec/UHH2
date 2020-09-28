@@ -31,9 +31,10 @@ def autocomplete_Datasets(data):
 
     for element in data:
         if '*' in element:
-            jsondict = get_data(host='https://cmsweb.cern.ch',query="dataset="+element,idx=0,limit=0,threshold=300)
-            #print(json.dumps(jsondict, indent=4, sort_keys=True))
-            #print(json.dumps(jsondict['data'], indent=4, sort_keys=True))
+            instance = " instance=prod/phys03" if 'USER' in element else ''
+            jsondict = get_data(host='https://cmsweb.cern.ch',query="dataset="+element+instance,idx=0,limit=0,threshold=300)
+            #print json.dumps(jsondict, indent=4, sort_keys=True)
+            #print json.dumps(jsondict['data'], indent=4, sort_keys=True)
             try:
                 for i in range(len(jsondict['data'])):
                     result_array.append(jsondict['data'][i]['dataset'][0]['name'])

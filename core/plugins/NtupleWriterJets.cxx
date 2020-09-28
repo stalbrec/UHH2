@@ -883,11 +883,13 @@ void NtupleWriterTopJets::process(const edm::Event & event, uhh2::Event & uevent
 
     bool checkjettype =0;
     bool checkjettypegroomed =0;
-
+    bool verbose_jet=true;
     edm::Handle<pat::JetCollection> h_pat_topjets;
     event.getByToken(src_token, h_pat_topjets);
     const vector<pat::Jet> & pat_topjets = *h_pat_topjets;
-
+    if(verbose_jet){
+    std::cout << "SteffenOut: topjet token "<< src.label() << std::endl;
+    }
     edm::Handle<edm::ValueMap<float>> h_njettiness1, h_njettiness2, h_njettiness3, h_njettiness4;
     edm::Handle<edm::ValueMap<float>> h_njettiness1_groomed, h_njettiness2_groomed, h_njettiness3_groomed, h_njettiness4_groomed;
     edm::Handle<edm::ValueMap<float>> h_qjets;
@@ -978,9 +980,17 @@ void NtupleWriterTopJets::process(const edm::Event & event, uhh2::Event & uevent
       }
     }
     /*-------------------*/
-
+    if(verbose_jet){
+    std::cout << "----------------------------------"<<std::endl;
+    std::cout << "Event: "<< uevent.event << std::endl;
+    std::cout << "Lumi: "<< uevent.luminosityBlock << std::endl;
+    std::cout << "Run: "<< uevent.run << std::endl;
+    }
     for (unsigned int i = 0; i < pat_topjets.size(); i++) {
-        const pat::Jet & pat_topjet =  pat_topjets[i];
+      float mass_difference = 0.0;
+ 
+      const pat::Jet & pat_topjet =  pat_topjets[i];
+
         if(pat_topjet.pt() < ptmin) continue;
         if(fabs(pat_topjet.eta()) > etamax) continue;
 
@@ -1221,6 +1231,24 @@ void NtupleWriterTopJets::process(const edm::Event & event, uhh2::Event & uevent
 
             const pat::Jet & softdrop_jet = pat_softdropjets[i_pat_softdropjet];
             topjet.set_softdropmass(softdrop_jet.mass());
+            if(verbose_jet){
+            std::cout << "##################################"<<std::endl;
+            std::cout << "SteffenOut: topjet #"<< i << std::endl;
+            std::cout << "MassComp: topjet pt unc "<< pat_topjet.correctedP4(0).pt() << std::endl;
+            std::cout << "MassComp: topjet eta unc "<< pat_topjet.correctedP4(0).eta() << std::endl;
+            std::cout << "MassComp: topjet mass raw "<< pat_topjet.mass()*pat_topjet.jecFactor(0) << std::endl;
+            std::cout << "MassComp: topjet jec "<< pat_topjet.jecFactor(0) << std::endl;
+            std::cout << "MassComp: topjet jetarea "<< pat_topjet.jetArea() << std::endl;
+            std::cout << "MassComp: softdropmass "<< softdrop_jet.mass() << std::endl;
+            std::cout << "MassComp: softdroppt unc "<< softdrop_jet.correctedP4(0).pt() << std::endl;
+            std::cout << "MassComp: softdropeta unc "<< softdrop_jet.correctedP4(0).eta() << std::endl;
+            std::cout << "MassComp: softdropmass raw "<< softdrop_jet.mass()*softdrop_jet.jecFactor(0) << std::endl;
+            mass_difference += softdrop_jet.mass()*softdrop_jet.jecFactor(0);
+            // std::cout << "MassComp: softdrop NPFCand "<< softdrop_jet.getPFConstituents().size() << std::endl;
+            std::cout << "MassComp: softdrop Nconst "<< softdrop_jet.numberOfDaughters() << std::endl;
+            std::cout << "MassComp: softdrop jec "<< softdrop_jet.jecFactor(0) << std::endl;
+            std::cout << "MassComp: softdrop jetarea "<< softdrop_jet.jetArea() << std::endl;
+            }
           }
         }
         /*---------------------*/
@@ -1348,11 +1376,23 @@ void NtupleWriterTopJets::process(const edm::Event & event, uhh2::Event & uevent
 	}//if label daughters
 	//taking subjets from existing miniAOD collection
 	else{
+          LorentzVector subjet_sum,subjet_sum_raw,subjet_sum_raw2;
+          int n_const_subjet_constituents = 0;
+
 	  auto tSubjets = pat_topjet.subjets(subjet_src);
 	  for( int sj = 0; sj < (int)tSubjets.size(); ++sj ){
 	    Jet subjet;
 	    auto tpatsubjet = dynamic_cast<const pat::Jet *>(tSubjets.at(sj).get());
             if (tpatsubjet) {
+              if(verbose_jet){
+              std::cout << "MassComp: raw subjet "<< sj << " pt" << tpatsubjet->correctedP4(0).pt() <<endl;
+              std::cout << "MassComp: raw subjet "<< sj << " M" << tpatsubjet->correctedP4(0).M() <<endl;
+              std::cout << "MassComp: subjets jec "<<std::setprecision(10)<< tpatsubjet->jecFactor(0) << std::endl;
+              }
+              subjet_sum_raw += tpatsubjet->correctedP4(0);
+              subjet_sum_raw2 += tpatsubjet->p4()*tpatsubjet->jecFactor(0);
+              subjet_sum += tpatsubjet->p4();
+              n_const_subjet_constituents += tpatsubjet->numberOfDaughters();
 	      try{
 		NtupleWriterJets::fill_jet_info(uevent,*tpatsubjet, subjet, do_btagging_subjets, do_taginfo_subjets, doPuppiSpecific, storePFcands);
 	      }catch(runtime_error &){
@@ -1381,6 +1421,20 @@ void NtupleWriterTopJets::process(const edm::Event & event, uhh2::Event & uevent
 	    }
 	    topjet.add_subjet(subjet);
 	  }//loop over subjets
+          if(verbose_jet){
+          std::cout << "MassComp: Mass subjetsraw "<< subjet_sum_raw.M() << std::endl;
+          std::cout << "MassComp: Mass subjetsraw2 "<< subjet_sum_raw2.M() << std::endl;
+          std::cout << "MassComp: Pt subjetsraw "<< subjet_sum_raw.pt() << std::endl;
+          std::cout << "MassComp: Eta subjetsraw "<< subjet_sum_raw.eta() << std::endl;
+          std::cout << "MassComp: Pt subjets "<< subjet_sum.pt() << std::endl;
+          std::cout << "MassComp: Eta subjets "<< subjet_sum.eta() << std::endl;
+          mass_difference -= subjet_sum_raw.M();
+          mass_difference /= subjet_sum_raw.M();
+          mass_difference *= 100;
+          std::cout << "MassComp: Mass subjets "<< subjet_sum.M() << std::endl;
+          std::cout << "MassComp: Nconst subjets "<< n_const_subjet_constituents << std::endl;
+          std::cout << "MassComp: dM "<< mass_difference << "%" << std::endl;
+          }
 	}//if not daughters but subjets from miniAOD collection
     }// for topjets
     uevent.set(handle, move(topjets));
