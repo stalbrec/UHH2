@@ -868,9 +868,11 @@ bool NtupleWriter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) {
        event->genInfo->set_pdf_xPDF2(-999);
      }
 
+     std::vector<double> spinup_from_lhe;
      edm::Handle<LHEEventProduct> lhe;
      if(iEvent.getByToken(lhe_token,lhe)){
        event->genInfo->set_originalXWGTUP(lhe->originalXWGTUP());
+       spinup_from_lhe = lhe->hepeup().SPINUP;
        for(unsigned int k=0; k<lhe->weights().size(); k++){
          event->genInfo->add_systweight(lhe->weights().at(k).wgt);
        }
@@ -923,6 +925,7 @@ bool NtupleWriter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup) {
            genp.set_index(index);
            genp.set_status( iter->status());
            genp.set_pdgId( iter->pdgId());
+           genp.set_spin(spinup_from_lhe[index]);
 
            genp.set_mother1(-1);
            genp.set_mother2(-1);
