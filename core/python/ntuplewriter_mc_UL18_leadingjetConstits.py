@@ -13,7 +13,9 @@ process = generate_process(year="UL18", useData=False)
 
 # Please do not commit changes to source filenames - used for consistency testing
 process.source.fileNames = cms.untracked.vstring([
-    '/store/mc/RunIISummer19UL18MiniAOD/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/10000/CB2A4110-1466-E949-BFE4-661AFEB27197.root'
+    #'/store/mc/RunIISummer19UL18MiniAOD/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/10000/CB2A4110-1466-E949-BFE4-661AFEB27197.root'
+    '/store/mc/Phase2HLTTDRSummer20ReRECOMiniAOD/QCD_Pt_300to470_TuneCP5_14TeV_pythia8/GEN-SIM-DIGI-RAW-MINIAOD/NoPU_111X_mcRun4_realistic_T15_v1-v1/100000/1750775B-F6D7-AE4A-8097-AE0181CE03A9.root'
+
 ])
 
 # Turn on jet constituent storing for leading three AK4 jets

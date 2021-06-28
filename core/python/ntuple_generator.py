@@ -88,7 +88,8 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
     elif year == "UL17":
         process = cms.Process("USER", eras.Run2_2017)
     elif year == "UL18":
-        process = cms.Process("USER", eras.Run2_2018)
+        # process = cms.Process("USER", eras.Run2_2018)
+        process = cms.Process("USER", eras.Phase2C9)
     else:
         raise RuntimeError("Cannot setup process for this year, may need to add a new entry.")
 
@@ -260,7 +261,8 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
 
     ###############################################
     # RECO AND GEN SETUP
-    process.load("Configuration.Geometry.GeometryRecoDB_cff")
+    # process.load("Configuration.Geometry.GeometryRecoDB_cff")
+    process.load("Configuration.Geometry.GeometryExtended2026D49Reco_cff")
     process.load("Configuration.StandardSequences.MagneticField_cff")
 
     # see https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions
@@ -1189,7 +1191,8 @@ def generate_process(year, useData=True, isDebug=False, fatjet_ptmin=120.):
 
     #### update PUPPI to v14
     from CommonTools.PileupAlgos.customizePuppiTune_cff import UpdatePuppiTuneV14
-    UpdatePuppiTuneV14(process, not useData)
+    # UpdatePuppiTuneV14(process, not useData)
+    UpdatePuppiTuneV14(process)
 
     # Update DeepBoosted training to V2 for everything but 2016v2
     # Check https://twiki.cern.ch/twiki/bin/view/CMS/DeepAKXTagging for latest recommendations
